@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛒 Grocery List Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            animation: rotateIn 0.7s ease-out;
+        }
+
+        @keyframes rotateIn {
+            from {
+                opacity: 0;
+                transform: rotateY(90deg) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: rotateY(0deg) scale(1);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+        }
+
+        input[type="text"],
+        select {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: scale(1.05);
+        }
+
+        input[type="text"]::placeholder {
+            color: #adb5bd;
+        }
+
+        select {
+            cursor: pointer;
+            padding: 12px 15px;
+            min-width: 100px;
+        }
+
+        .add-btn {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .add-btn:active {
+            transform: scale(0.95);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn.danger {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .action-btn.danger:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .action-btn.success {
+            border-color: #51cf66;
+            color: #51cf66;
+        }
+
+        .action-btn.success:hover {
+            background: #51cf66;
+            color: white;
+        }
+
+        .action-btn.warning {
+            border-color: #ffa500;
+            color: #ffa500;
+        }
+
+        .action-btn.warning:hover {
+            background: #ffa500;
+            color: white;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+            transform: scale(1.05);
+        }
+
+        .list-section {
+            padding: 20px;
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .list-section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .list-section::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .list-section::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .list-section::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #adb5bd;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .grocery-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            animation: slideInRight 0.4s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px) rotateY(90deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) rotateY(0deg);
+            }
+        }
+
+        .grocery-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .grocery-item.purchased {
+            background: #f0f0f0;
+            opacity: 0.6;
+        }
+
+        .grocery-item.purchased .item-name {
+            text-decoration: line-through;
+            color: #adb5bd;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #212529;
+            transition: all 0.3s ease;
+        }
+
+        .item-meta {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .item-quantity {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .item-status {
+            display: inline-block;
+            background: #fff3cd;
+            color: #856404;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .item-status.pending {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .delete-btn {
+            width: 40px;
+            height: 40px;
+            background: #ffe0e0;
+            border: none;
+            border-radius: 10px;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-btn:hover {
+            background: #dc3545;
+            color: white;
+            transform: rotate(90deg) scale(1.2);
+        }
+
+        .delete-btn:active {
+            transform: scale(0.85);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 2px solid #e9ecef;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .stat-item {
+            text-align: center;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .input-section {
+                flex-direction: column;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+
+            .filter-section {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>🛒 Grocery List</h1>
+            <p>Organize your shopping with ease</p>
+        </div>
+
+        <div class="input-section">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="itemInput" 
+                    placeholder="Add an item..."
+                >
+                <input 
+                    type="number" 
+                    id="quantityInput" 
+                    placeholder="Qty" 
+                    min="1" 
+                    value="1"
+                    style="max-width: 80px;"
+                >
+            </div>
+            <button class="add-btn" onclick="addItem()">
+                <i class="fas fa-plus"></i> Add
+            </button>
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-btn success" onclick="markAllPending()">
+                <i class="fas fa-clock"></i> Mark Pending
+            </button>
+            <button class="action-btn warning" onclick="clearPurchased()">
+                <i class="fas fa-trash-restore"></i> Clear Bought
+            </button>
+        </div>
+
+        <div class="list-section" id="listSection">
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <p>Your grocery list is empty. Add an item!</p>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number" id="totalCount">0</span>
+                <span>Total</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="purchasedCount">0</span>
+                <span>Bought</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="pendingCount">0</span>
+                <span>Pending</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let groceryList = JSON.parse(localStorage.getItem('groceryList')) || [];
+
+        document.getElementById('itemInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addItem();
+        });
+
+        function addItem() {
+            const nameInput = document.getElementById('itemInput');
+            const quantityInput = document.getElementById('quantityInput');
+
+            const name = nameInput.value.trim();
+            const quantity = parseInt(quantityInput.value) || 1;
+
+            if (!name) {
+                alert('Please enter an item name');
+                nameInput.focus();
+                return;
+            }
+
+            const item = {
+                id: Date.now(),
+                name: name,
+                quantity: quantity,
+                purchased: false,
+                pending: false
+            };
+
+            groceryList.push(item);
+            saveList();
+            renderList();
+
+            nameInput.value = '';
+            quantityInput.value = '1';
+            nameInput.focus();
+        }
+
+        function deleteItem(id) {
+            groceryList = groceryList.filter(item => item.id !== id);
+            saveList();
+            renderList();
+        }
+
+        function togglePurchased(id) {
+            const item = groceryList.find(i => i.id === id);
+            if (item) {
+                item.purchased = !item.purchased;
+                if (item.purchased) item.pending = false;
+                saveList();
+                renderList();
+            }
+        }
+
+        function markAsPending(id) {
+            const item = groceryList.find(i => i.id === id);
+            if (item) {
+                item.pending = !item.pending;
+                if (item.pending) item.purchased = false;
+                saveList();
+                renderList();
+            }
+        }
+
+        function markAllPending() {
+            groceryList.forEach(item => {
+                if (!item.purchased) {
+                    item.pending = true;
+                }
+            });
+            saveList();
+            renderList();
+        }
+
+        function clearPurchased() {
+            groceryList = groceryList.filter(item => !item.purchased);
+            saveList();
+            renderList();
+        }
+
+        function renderList() {
+            const listSection = document.getElementById('listSection');
+
+            if (groceryList.length === 0) {
+                listSection.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No items yet. Add an item!</p>
+                    </div>
+                `;
+            } else {
+                listSection.innerHTML = groceryList.map(item => `
+                    <div class="grocery-item ${item.purchased ? 'purchased' : ''}">
+                        <input 
+                            type="checkbox" 
+                            class="checkbox" 
+                            ${item.purchased ? 'checked' : ''}
+                            onchange="togglePurchased(${item.id})"
+                        >
+                        <div class="item-content">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-meta">
+                                <span class="item-quantity">Qty: ${item.quantity}</span>
+                                ${item.pending ? '<span class="item-status pending">Pending</span>' : ''}
+                            </div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteItem(${item.id})" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = groceryList.length;
+            const purchased = groceryList.filter(i => i.purchased).length;
+            const pending = groceryList.filter(i => i.pending && !i.purchased).length;
+
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('purchasedCount').textContent = purchased;
+            document.getElementById('pendingCount').textContent = pending;
+        }
+
+        function saveList() {
+            localStorage.setItem('groceryList', JSON.stringify(groceryList));
+        }
+
+        renderList();
+    </script>
+
+</body>
+</html>
