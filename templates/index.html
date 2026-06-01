@@ -1,8 +1,3 @@
-Here is the updated code. I have completely redesigned the CSS to follow a much more professional, premium, and clean aesthetic (reminiscent of native iOS apps or modern SaaS platforms).
-
-The logic and JavaScript remain completely untouched, but the layout is now heavily optimized for iPhones, including dynamic safe-area insets (for notches/dynamic islands), proper input font sizes to prevent forced zooming, and a clean card-based list layout.
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +6,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Grocery List">
+    <meta name="theme-color" content="#ffffff">
     <title>🛒 Grocery List Manager</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -30,9 +26,8 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         }
 
         body {
-            /* Native Apple font stack for premium look */
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f1f5f9; /* Soft cool gray background */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            background-color: #f1f5f9;
             color: #0f172a;
             min-height: 100vh;
             min-height: 100dvh;
@@ -46,8 +41,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         .container {
             background: #ffffff;
             border-radius: 24px;
-            box-shadow: 0 12px 40px -12px rgba(15, 23, 42, 0.15), 
-                        0 0 0 1px rgba(15, 23, 42, 0.03);
+            box-shadow: 0 12px 40px -12px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(15, 23, 42, 0.03);
             width: 100%;
             max-width: 480px;
             display: flex;
@@ -66,7 +60,8 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         /* Header Area */
         .header {
             background: #ffffff;
-            padding: 28px 24px 20px;
+            padding: 24px;
+            padding-top: max(24px, calc(env(safe-area-inset-top) + 8px));
             text-align: left;
             flex-shrink: 0;
             border-bottom: 1px solid #f1f5f9;
@@ -78,9 +73,6 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             color: #0f172a;
             letter-spacing: -0.03em;
             margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .header p {
@@ -94,7 +86,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             display: flex;
             flex-direction: column;
             gap: 12px;
-            padding: 20px 24px;
+            padding: 16px 24px;
             background: #ffffff;
             flex-shrink: 0;
             z-index: 10;
@@ -102,11 +94,11 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
 
         .input-group {
             display: grid;
-            grid-template-columns: 1fr 75px;
+            grid-template-columns: 1fr 70px;
             gap: 10px;
         }
 
-        /* Input Fields Optimization for iOS */
+        /* Input Fields - iOS Optimized */
         input[type="text"],
         input[type="number"],
         input[type="datetime-local"] {
@@ -115,7 +107,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
-            font-size: 16px; /* Prevents iOS auto-zoom */
+            font-size: 16px;
             color: #0f172a;
             font-weight: 500;
             transition: all 0.2s ease;
@@ -125,10 +117,8 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         }
 
         input[type="text"]::placeholder,
-        input[type="number"]::placeholder,
-        input[type="datetime-local"]::placeholder {
+        input[type="number"]::placeholder {
             color: #94a3b8;
-            font-weight: 400;
         }
 
         input[type="text"]:focus,
@@ -140,7 +130,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
         }
 
-        /* Add Button */
+        /* Add Button - Fixed for Mobile */
         .add-btn {
             padding: 14px 20px;
             background: #0f172a;
@@ -150,24 +140,26 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             white-space: nowrap;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .add-btn:active {
-            transform: scale(0.97);
             background: #1e293b;
+            transform: scale(0.97);
         }
 
         /* Action Buttons */
         .action-buttons {
             display: flex;
-            gap: 10px;
-            padding: 0 24px 16px;
+            gap: 8px;
+            padding: 0 24px 12px;
             background: #ffffff;
             flex-wrap: wrap;
             flex-shrink: 0;
@@ -176,13 +168,14 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
 
         .action-btn {
             flex: 1;
+            min-width: 80px;
             padding: 10px 12px;
             background: #ffffff;
             border: 1px solid #e2e8f0;
             color: #475569;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             transition: all 0.2s ease;
             display: flex;
@@ -190,6 +183,8 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             justify-content: center;
             gap: 6px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .action-btn:active {
@@ -202,39 +197,28 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             background: #f0fdf4;
         }
 
-        .action-btn.success:active {
-            background: #d1fae5;
-        }
-
         .action-btn.danger {
             color: #e11d48;
             border-color: #fecdd3;
             background: #fff1f2;
         }
 
-        .action-btn.danger:active {
-            background: #ffe4e6;
-        }
-
         /* List Section */
         .list-section {
-            padding: 16px 24px;
+            padding: 12px 24px;
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             background: #f8fafc;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
-        /* Custom Scrollbar for non-iOS */
         .list-section::-webkit-scrollbar {
             width: 5px;
         }
-        .list-section::-webkit-scrollbar-track {
-            background: transparent;
-        }
+
         .list-section::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 10px;
@@ -260,19 +244,20 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
 
         .empty-state p {
             font-weight: 500;
+            font-size: 0.9rem;
         }
 
         /* Grocery Items */
         .grocery-item {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 16px;
+            gap: 12px;
+            padding: 14px;
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 14px;
+            border-radius: 12px;
             transition: all 0.2s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
             animation: slideIn 0.3s ease-out;
         }
 
@@ -284,7 +269,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         .grocery-item.purchased {
             background: #f8fafc;
             border-color: #f1f5f9;
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
         .grocery-item.purchased .item-name {
@@ -293,8 +278,8 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         }
 
         .checkbox {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
             accent-color: #3b82f6;
             flex-shrink: 0;
@@ -308,7 +293,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
 
         .item-name {
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #0f172a;
             word-break: break-word;
             line-height: 1.3;
@@ -317,8 +302,8 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         .item-meta {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 6px;
+            gap: 6px;
+            margin-top: 4px;
             flex-wrap: wrap;
         }
 
@@ -327,31 +312,29 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             background: #f1f5f9;
             padding: 2px 8px;
             border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            letter-spacing: 0.02em;
         }
 
         .item-status {
-            display: inline-block;
             background: #eff6ff;
             color: #2563eb;
             padding: 2px 8px;
             border-radius: 6px;
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
 
         /* Delete Button */
         .delete-btn {
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             background: transparent;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             color: #cbd5e1;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
@@ -362,14 +345,14 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         .delete-btn:active {
             background: #fee2e2;
             color: #e11d48;
-            transform: scale(0.9);
         }
 
         /* Statistics Footer */
         .stats {
             display: flex;
-            justify-content: space-between;
-            padding: 16px 32px;
+            justify-content: space-around;
+            padding: 12px 24px;
+            padding-bottom: max(12px, calc(env(safe-area-inset-bottom) + 4px));
             background: #ffffff;
             border-top: 1px solid #f1f5f9;
             flex-shrink: 0;
@@ -383,20 +366,20 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         }
 
         .stat-number {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #0f172a;
         }
 
         .stat-item span:last-child {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: #64748b;
             font-weight: 600;
         }
 
-        /* iOS Blur Modal Styles */
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -410,7 +393,6 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             z-index: 1000;
             align-items: flex-end;
             justify-content: center;
-            animation: fadeIn 0.2s ease;
         }
 
         .modal.active {
@@ -423,8 +405,10 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             padding: 24px;
             width: 100%;
             max-width: 480px;
-            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            padding-bottom: max(24px, env(safe-area-inset-bottom));
+            animation: slideUp 0.3s ease;
+            padding-bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         @keyframes slideUp {
@@ -436,11 +420,11 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .modal-header h2 {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #0f172a;
         }
@@ -457,7 +441,6 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s;
         }
 
         .modal-close:active {
@@ -476,15 +459,33 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             color: #475569;
         }
 
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
         .modal-buttons {
             display: flex;
             gap: 12px;
-            margin-top: 28px;
+            margin-top: 24px;
         }
 
         .btn-primary, .btn-secondary {
             flex: 1;
-            padding: 14px;
+            padding: 12px;
             border: none;
             border-radius: 12px;
             font-weight: 600;
@@ -511,31 +512,33 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
 
         .btn-secondary:active {
             background: #f8fafc;
-            transform: scale(0.97);
         }
 
         /* Notification Badge */
         .notification-badge {
             position: fixed;
-            top: max(20px, env(safe-area-inset-top));
+            top: max(20px, calc(env(safe-area-inset-top) + 10px));
             left: 50%;
             transform: translateX(-50%);
             background: #0f172a;
             color: white;
-            padding: 14px 24px;
+            padding: 12px 20px;
             border-radius: 100px;
             box-shadow: 0 10px 25px rgba(15, 23, 42, 0.2);
             z-index: 2000;
-            animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            font-size: 0.9rem;
+            animation: slideDown 0.4s ease;
+            font-size: 0.85rem;
             font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
             white-space: nowrap;
+            max-width: 80%;
         }
 
-        /* Fullscreen Mobile Optimization (Native App Feel) */
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* Fullscreen Mobile Optimization */
         @media (max-width: 600px) {
             body {
                 padding: 0;
@@ -551,13 +554,65 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
                 box-shadow: none;
             }
 
-            /* Integrating Apple's Safe Area Insets for Edge-to-Edge display */
             .header {
-                padding-top: max(28px, env(safe-area-inset-top));
+                padding: 16px;
+                padding-top: max(16px, calc(env(safe-area-inset-top) + 8px));
+            }
+
+            .input-section {
+                padding: 12px 16px;
+            }
+
+            .input-group {
+                grid-template-columns: 1fr 65px;
+                gap: 8px;
+            }
+
+            input[type="text"],
+            input[type="number"] {
+                padding: 12px 14px;
+                font-size: 16px;
+            }
+
+            .action-buttons {
+                padding: 0 16px 10px;
+                gap: 6px;
+            }
+
+            .action-btn {
+                min-width: 70px;
+                padding: 8px 10px;
+                font-size: 0.75rem;
+            }
+
+            .list-section {
+                padding: 10px 16px;
+                gap: 8px;
+            }
+
+            .grocery-item {
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .delete-btn {
+                width: 32px;
+                height: 32px;
             }
 
             .stats {
-                padding-bottom: max(16px, env(safe-area-inset-bottom));
+                padding: 10px 16px;
+                padding-bottom: max(10px, calc(env(safe-area-inset-bottom) + 4px));
+                gap: 10px;
+            }
+
+            .stat-number {
+                font-size: 1.1rem;
+            }
+
+            .modal-content {
+                padding: 20px;
+                padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px));
             }
         }
     </style>
@@ -572,7 +627,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
 
         <div class="input-section">
             <div class="input-group">
-                <input type="text" id="itemInput" placeholder="Add item...">
+                <input type="text" id="itemInput" placeholder="Add item..." autocomplete="off">
                 <input type="number" id="quantityInput" placeholder="Qty" min="1" value="1">
             </div>
             <button class="add-btn" onclick="addItem()">
@@ -595,7 +650,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         <div class="list-section" id="listSection">
             <div class="empty-state">
                 <i class="fas fa-inbox"></i>
-                <p>No items yet. Start shopping!</p>
+                <p>No items yet</p>
             </div>
         </div>
 
@@ -624,7 +679,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
                 </button>
             </div>
             <div class="form-group">
-                <label>Reminder Message</label>
+                <label>Message</label>
                 <input type="text" id="reminderMessage" placeholder="e.g., Go shopping" value="Don't forget to go shopping!">
             </div>
             <div class="form-group">
@@ -633,7 +688,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             </div>
             <div class="modal-buttons">
                 <button class="btn-secondary" onclick="closeNotificationModal()">Cancel</button>
-                <button class="btn-primary" onclick="setReminder()">Set Reminder</button>
+                <button class="btn-primary" onclick="setReminder()">Set</button>
             </div>
         </div>
     </div>
@@ -642,7 +697,6 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         let groceryList = JSON.parse(localStorage.getItem('groceryList')) || [];
         let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
 
-        // Request notification permission
         if ('Notification' in window && Notification.permission === 'default') {
             Notification.requestPermission();
         }
@@ -659,24 +713,21 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             const quantity = parseInt(quantityInput.value) || 1;
 
             if (!name) {
-                alert('Please enter an item name');
+                alert('Please enter item name');
                 nameInput.focus();
                 return;
             }
 
-            const item = {
+            groceryList.push({
                 id: Date.now(),
                 name: name,
                 quantity: quantity,
                 purchased: false,
-                pending: false,
-                createdAt: new Date().toISOString()
-            };
+                pending: false
+            });
 
-            groceryList.push(item);
             saveList();
             renderList();
-
             nameInput.value = '';
             quantityInput.value = '1';
             nameInput.focus();
@@ -716,53 +767,38 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             const listSection = document.getElementById('listSection');
 
             if (groceryList.length === 0) {
-                listSection.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <p>No items yet. Start shopping!</p>
-                    </div>
-                `;
-            } else {
-                listSection.innerHTML = groceryList.map(item => `
-                    <div class="grocery-item ${item.purchased ? 'purchased' : ''}">
-                        <input 
-                            type="checkbox" 
-                            class="checkbox" 
-                            ${item.purchased ? 'checked' : ''}
-                            onchange="togglePurchased(${item.id})"
-                        >
-                        <div class="item-content">
-                            <div class="item-name">${escapeHtml(item.name)}</div>
-                            <div class="item-meta">
-                                <span class="item-quantity">Qty: ${item.quantity}</span>
-                                ${item.pending ? '<span class="item-status">Pending</span>' : ''}
-                            </div>
-                        </div>
-                        <button class="delete-btn" onclick="deleteItem(${item.id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `).join('');
+                listSection.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><p>No items yet</p></div>`;
+                updateStats();
+                return;
             }
+
+            listSection.innerHTML = groceryList.map(item => `
+                <div class="grocery-item ${item.purchased ? 'purchased' : ''}">
+                    <input type="checkbox" class="checkbox" ${item.purchased ? 'checked' : ''} onchange="togglePurchased(${item.id})">
+                    <div class="item-content">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-meta">
+                            <span class="item-quantity">Qty: ${item.quantity}</span>
+                            ${item.pending ? '<span class="item-status">Pending</span>' : ''}
+                        </div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteItem(${item.id})"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('');
 
             updateStats();
         }
 
         function updateStats() {
-            const total = groceryList.length;
-            const purchased = groceryList.filter(i => i.purchased).length;
-            const pending = groceryList.filter(i => i.pending && !i.purchased).length;
-
-            document.getElementById('totalCount').textContent = total;
-            document.getElementById('purchasedCount').textContent = purchased;
-            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('totalCount').textContent = groceryList.length;
+            document.getElementById('purchasedCount').textContent = groceryList.filter(i => i.purchased).length;
+            document.getElementById('pendingCount').textContent = groceryList.filter(i => i.pending && !i.purchased).length;
         }
 
         function saveList() {
             localStorage.setItem('groceryList', JSON.stringify(groceryList));
         }
 
-        // Notification Features
         function openNotificationModal() {
             document.getElementById('notificationModal').classList.add('active');
             setDefaultDateTime();
@@ -775,8 +811,7 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
         function setDefaultDateTime() {
             const now = new Date();
             now.setMinutes(now.getMinutes() + 30);
-            const isoString = now.toISOString().slice(0, 16);
-            document.getElementById('reminderTime').value = isoString;
+            document.getElementById('reminderTime').value = now.toISOString().slice(0, 16);
         }
 
         function setReminder() {
@@ -784,32 +819,26 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             const time = document.getElementById('reminderTime').value;
 
             if (!message || !time) {
-                alert('Please fill all fields');
+                alert('Fill all fields');
                 return;
             }
 
             const reminderTime = new Date(time).getTime();
-            const now = new Date().getTime();
-
-            if (reminderTime <= now) {
-                alert('Please select a future time');
+            if (reminderTime <= Date.now()) {
+                alert('Select future time');
                 return;
             }
 
-            const reminder = {
+            reminders.push({
                 id: Date.now(),
                 message: message,
                 time: reminderTime,
                 notified: false
-            };
+            });
 
-            reminders.push(reminder);
             localStorage.setItem('reminders', JSON.stringify(reminders));
-
-            showNotification('✓ Reminder Set', `Reminder set for ${new Date(time).toLocaleString()}`);
+            showNotification('✓ Reminder Set');
             closeNotificationModal();
-
-            // Check reminder when time comes
             checkReminders();
         }
 
@@ -820,12 +849,9 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
                     if (timeUntil > 0) {
                         setTimeout(() => {
                             if ('Notification' in window && Notification.permission === 'granted') {
-                                new Notification('🛒 Grocery List', {
-                                    body: reminder.message,
-                                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="75" font-size="75">🛒</text></svg>'
-                                });
+                                new Notification('🛒 Grocery List', { body: reminder.message });
                             }
-                            showNotification('Reminder', reminder.message);
+                            showNotification(reminder.message);
                             reminder.notified = true;
                             localStorage.setItem('reminders', JSON.stringify(reminders));
                         }, timeUntil);
@@ -834,38 +860,22 @@ The logic and JavaScript remain completely untouched, but the layout is now heav
             });
         }
 
-        function showNotification(title, message) {
+        function showNotification(message) {
             const badge = document.createElement('div');
             badge.className = 'notification-badge';
-            badge.innerHTML = `<strong>${title}:</strong> ${message}`;
+            badge.textContent = message;
             document.body.appendChild(badge);
-
-            setTimeout(() => {
-                badge.remove();
-            }, 4000);
+            setTimeout(() => badge.remove(), 3500);
         }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Close modal on outside click
         document.getElementById('notificationModal').addEventListener('click', (e) => {
             if (e.target.id === 'notificationModal') closeNotificationModal();
         });
 
-        // Initialize
         renderList();
         checkReminders();
-
-        // Check reminders every minute
         setInterval(checkReminders, 60000);
     </script>
 
 </body>
 </html>
-<<<<<<< HEAD:templates/Index.html
-
-
